@@ -6,7 +6,7 @@ public static class GenericAnalyticsEntryPoint
 {
     public static void GenericAnalyticsController(this WebApplication webApplication)
     {
-        var entryPointsGenericAnalytics = webApplication.MapGroup("/analytics");
+        var entryPointsGenericAnalytics = webApplication.MapGroup("");
         webApplication.MapGet("", (GenericAnalyticsContext context) =>
         {
             var results = context.GenericAnalytics.ToList();
@@ -22,6 +22,21 @@ public static class GenericAnalyticsEntryPoint
                 await context.SaveChangesAsync();
                 
                 Console.Write(result);
+            });
+
+        webApplication.MapPost("/list",
+            async (List<GenericAnalyticsRecord> requestList, GenericAnalyticsContext context) =>
+            {
+                {
+                    var genericAnalyticsList = requestList.Select(request =>
+                            new GenericAnalytics(request.date, request.level, request.level_lot,
+                                request.test_lot, request.name, request.value, request.mean, request.sd,
+                                request.unit_value))
+                        .ToList();
+
+                    await context.GenericAnalytics.AddRangeAsync(genericAnalyticsList);
+                    await context.SaveChangesAsync();
+                }
             });
     }
 }
