@@ -1,4 +1,4 @@
-namespace QualityLabPro.Api.GenericAnalytics;
+namespace QualityLabPro.Api.Entities;
 
 public class GenericAnalytics
 {

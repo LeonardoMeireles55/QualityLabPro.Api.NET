@@ -1,11 +1,15 @@
 using Microsoft.EntityFrameworkCore;
 using QualityLabPro.Api.Data;
-using QualityLabPro.Api.GenericAnalytics;
+using QualityLabPro.Api.Repository;
+using QualityLabPro.Api.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+builder.Services.AddScoped<IGenericAnalyticsRepository, GenericAnalyticsRepository>();
+builder.Services.AddScoped<IGenericAnalyticsService, GenericAnalyticsService>();
+builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
@@ -13,7 +17,6 @@ var configuration = builder.Configuration;
 builder.Services.AddDbContext<GenericAnalyticsContext>(options =>
     options.UseNpgsql(configuration.GetConnectionString("DefaultConnection")));
 var app = builder.Build();
-
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -23,7 +26,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
-app.GenericAnalyticsController();
+app.MapControllers();
+app.UseRouting();
 
 app.Run();
