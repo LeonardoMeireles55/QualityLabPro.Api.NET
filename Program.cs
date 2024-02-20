@@ -24,6 +24,6 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-app.AddGenericAnalyticsEntryPoint();
+app.GenericAnalyticsController();
 
 app.Run();
