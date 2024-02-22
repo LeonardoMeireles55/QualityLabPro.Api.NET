@@ -1,4 +1,4 @@
-using Microsoft.EntityFrameworkCore;
+using QualityLabPro.Api.Data;
 
 namespace QualityLabPro.Api.Repository;
 using QualityLabPro.Api.Entities;
@@ -6,27 +6,37 @@ using QualityLabPro.Api.Entities;
 public class GenericAnalyticsRepository : IGenericAnalyticsRepository
 
 {
-    public static List<GenericAnalytics> _GenericAnalytics { get; set; } = new List<GenericAnalytics>();
+    private List<GenericAnalytics> _GenericAnalytics { get;}
+    private GenericAnalyticsContext _context;
+    
+    public GenericAnalyticsRepository(GenericAnalyticsContext context)
+    {
+        _context = context;
+        _GenericAnalytics = new List<GenericAnalytics>();
+    }
     
     public IEnumerable<GenericAnalytics> GetAll()
     {
-        return _GenericAnalytics;
+        return _context.GenericAnalytics.ToList();
     }
 
-    public GenericAnalytics? GetGenericAnalyticsById(Guid Id)
+    public GenericAnalytics GetGenericAnalyticsById(Guid iGuid)
     {
-        return _GenericAnalytics.FirstOrDefault(p => p.Id == Id);
+        return _context.GenericAnalytics.FirstOrDefault(p => p.Id == iGuid)??
+            throw new ArgumentNullException(nameof(iGuid));
     }
 
     public GenericAnalytics PostGenericAnalytics(GenericAnalytics genericAnalytics)
     {
-        _GenericAnalytics.Add(genericAnalytics);
+        _context.Add(genericAnalytics);
+        _context.SaveChanges();
         return genericAnalytics;
     }
 
     public List<GenericAnalytics> PostGenericAnalyticsList(List<GenericAnalytics> genericAnalytics)
     { 
-        _GenericAnalytics.AddRange(genericAnalytics);
+        _context.AddRange(genericAnalytics);
+        _context.SaveChanges();
         return genericAnalytics;
     }
 
@@ -38,7 +48,8 @@ public class GenericAnalyticsRepository : IGenericAnalyticsRepository
         analytics.UnitValue = genericAnalytics.UnitValue;
         analytics.Sd = genericAnalytics.Sd;
         
-        _GenericAnalytics.Add(analytics);
+        _context.Add(analytics);
+        _context.SaveChanges();
 
         return _GenericAnalytics.Find(x => x.Id == idGuid);
 
@@ -46,10 +57,11 @@ public class GenericAnalyticsRepository : IGenericAnalyticsRepository
 
     public bool DeleteGenericAnalytics(Guid idGuid)
     {
-        var analytics = _GenericAnalytics.FirstOrDefault(p => p.Id == idGuid);
+        var analytics = _context.GenericAnalytics.FirstOrDefault(p => p.Id == idGuid);
         if (analytics is not null)
         {
-            _GenericAnalytics.Remove(analytics);
+            _context.Remove(analytics);
+            _context.SaveChanges();
             return true;
         }
         return false;

@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("QualityLabPro.Api")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+d75cb2890584ff9c5f65f38b2678b7ce7e101d12")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+3e4415746ec1f6dba84c90502d4d4d29498a6317")]
 [assembly: System.Reflection.AssemblyProductAttribute("QualityLabPro.Api")]
 [assembly: System.Reflection.AssemblyTitleAttribute("QualityLabPro.Api")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

@@ -1,3 +1,5 @@
+using Microsoft.AspNetCore.Http.HttpResults;
+
 namespace QualityLabPro.Api.Services
 
 {
@@ -21,6 +23,10 @@ namespace QualityLabPro.Api.Services
         public GenericAnalytics GetGenericAnalyticsById(Guid id)
         {
             var analytics = _genericAnalyticsRepository.GetGenericAnalyticsById(id);
+            if (analytics == null)
+            {
+                throw new HttpRequestException("Not Found, The requested resource was not found");
+            }
             return analytics;
         }
 
